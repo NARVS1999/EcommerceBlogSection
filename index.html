@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mogu Mogu E-commerce Blog Section</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/inter" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Blog Section -->
+    <div class="container mx-auto p-4 md:p-6">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4 bg-indigo-100 p-4 rounded-lg text-center text-indigo-500">Mogu Mogu Blog</h1>
+
+        <!-- Categories -->
+        <div class="mb-6">
+            <h2 class="text-lg md:text-xl font-semibold">Categories</h2>
+            <ul class="flex flex-wrap space-x-2 md:space-x-4">
+                <li><a href="#" class="text-blue-500 hover:underline">New Flavors</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Health Benefits</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Recipes & Tips</a></li>
+            </ul>
+        </div>
+
+        <!-- Blog Post Previews -->
+        <div id="blogPosts" class="grid grid-cols-1 gap-6"></div>
+        <!-- End of Blog Post Previews -->
+    </div>
+    <!-- End of Blog Section -->
+
+    <!-- JavaScript for handling comments and dynamic content -->
+    <script>
+        const blogPosts = [
+            {
+                title: "Discover the Unique Taste of Mogu Mogu",
+                excerpt: "Mogu Mogu combines real fruit juice with chewy nata de coco, creating a refreshing drink that’s also a fun snack.",
+                comments: []
+            },
+            {
+                title: "Why Mogu Mogu is a Must-Try Beverage",
+                excerpt: "With flavors like lychee and mango, Mogu Mogu offers a delightful drinking experience packed with dietary fiber and no preservatives.",
+                comments: []
+            },
+            {
+                title: "The Health Benefits of Drinking Mogu Mogu",
+                excerpt: "Mogu Mogu is not just delicious; it's also packed with vitamins and dietary fiber that support your health.",
+                comments: []
+            },
+            {
+                title: "Creative Ways to Enjoy Mogu Mogu",
+                excerpt: "From smoothies to desserts, discover innovative recipes that incorporate the delightful taste of Mogu Mogu.",
+                comments: []
+            }
+        ];
+
+        function renderBlogPosts() {
+            const blogContainer = document.getElementById('blogPosts');
+            blogContainer.innerHTML = ''; // Clear existing content
+
+            blogPosts.forEach((post, index) => {
+                const postDiv = document.createElement('div');
+                postDiv.className = "bg-indigo-100 rounded-lg border-4 border-indigo-500 shadow-md p-4";
+                
+                postDiv.innerHTML = `
+                    <h3 class="text-lg md:text-xl font-semibold">${post.title}</h3>
+                    <p class="text-gray-700 mt-2">${post.excerpt}</p>
+                    <button onclick="toggleComments('comments${index}', 'comment-btn-${index}')" id="comment-btn-${index}" class="mt-4 text-blue-500">View Comments</button>
+                    <div id="comments${index}" class="hidden mt-4">
+                        <h4 class="font-semibold">Comments:</h4>
+                        <textarea id="commentInput${index}" placeholder="Add a comment..." class="border rounded w-full p-2 mt-2"></textarea>
+                        <button onclick="addComment(${index})" class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded px-4 py-2">Submit</button>
+                        <ul id="commentsList${index}" class="mt-2"></ul>
+                    </div>
+                `;
+                
+                blogContainer.appendChild(postDiv);
+            });
+        }
+
+        function toggleComments(commentsId, commentBtnId) {
+            const commentsSection = document.getElementById(commentsId);
+            const commentsButton = document.getElementById(commentBtnId);
+            const currentBtnTextContent = commentsButton.innerText;
+
+            if(currentBtnTextContent == "View Comments") {
+                commentsButton.innerText = "Hide Comments";
+            } else {
+                commentsButton.innerText = "View Comments";
+            }
+
+            commentsSection.classList.toggle("hidden");
+        }
+
+        function addComment(postIndex) {
+            const commentInput = document.getElementById(`commentInput${postIndex}`);
+            const commentText = commentInput.value.trim();
+            if (commentText) {
+                const commentList = document.getElementById(`commentsList${postIndex}`);
+                const newComment = document.createElement("li");
+                newComment.textContent = `You: ${commentText}`;
+                newComment.className = "border-b py-1";
+                
+                // Add comment to the corresponding post's comments array
+                blogPosts[postIndex].comments.push(commentText);
+                
+                commentList.appendChild(newComment);
+                commentInput.value = ""; // Clear the input
+            }
+        }
+
+        // Initial render of blog posts
+        renderBlogPosts();
+    </script>
+</body>
+
+</html>
